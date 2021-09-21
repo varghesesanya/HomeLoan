@@ -36,5 +36,24 @@ public class LoanService {
         }
 
 	}
+
+		public String calculateEMI(Long LoanId) {
+			// EMI = [P x R x (1+R)^N]/[(1+R)^N-1]
+			
+			Optional<Loan> l= loanRepository.findById(LoanId);
+			if(l.isPresent()) {
+				Long P, N;
+				double emi, R;
+				
+				P = l.get().getTotalLoanAmount();
+				N = l.get().getTenure()*12;
+				R = l.get().getInterestRate()/1200; 
+				
+				emi = (P*R*Math.pow(1+R, N))/(Math.pow(1+R, N)-1);
+				
+				return "The amount to be paid as EMI for thr given loan:  "+ emi;
+			}
+			return "Sorry, we didn't find any loan for the given ID.";
+	}
 	
 }

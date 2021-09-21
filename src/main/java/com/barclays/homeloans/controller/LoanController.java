@@ -3,6 +3,8 @@ package com.barclays.homeloans.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +28,11 @@ public class LoanController {
 		loan.setStatus(json.get("status"));
         String monthlySalary= json.get("monthlySalary").toString();
         return loanService.loanApplication(loan,Integer.parseInt(monthlySalary));
+    }
+	
+	@GetMapping("showemi/{id}")
+    public String showemi(@PathVariable Long id) {
+        return loanService.calculateEMI(id);
     }
 
 }
