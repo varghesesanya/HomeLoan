@@ -22,8 +22,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//	@Autowired
-//	private User user;
 
     @PostMapping("login")
     public String login(@RequestBody Map<String, String> json) {

@@ -15,7 +15,6 @@ public class LoanService {
 	@Autowired
 	private LoanRepository loanRepository;
 	
-//	String description, String address,Long loanAmount, Integer tenure,Byte image
 	public String loanApplication(Loan loan, Integer monthlySalary) {
 		try {
 			if(monthlySalary*50<= loan.getTotalLoanAmount()) {
