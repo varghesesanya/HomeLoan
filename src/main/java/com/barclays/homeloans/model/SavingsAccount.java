@@ -6,10 +6,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 public class SavingsAccount {
-//	@Column
-//	@Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long sequenceAccountId;
 
 	@Id
 	@Column
