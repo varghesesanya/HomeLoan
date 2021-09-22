@@ -18,4 +18,8 @@ public class SavingsAccountService {
         account.setBalance(initialBalance);
         savingsAccRepo.save(account);
     }
+    
+    public SavingsAccount getAccountById(long id) {
+    	return savingsAccRepo.getById(id);
+    }
 }

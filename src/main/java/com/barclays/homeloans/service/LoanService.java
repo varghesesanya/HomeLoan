@@ -16,7 +16,7 @@ public class LoanService {
 	@Autowired
 	private LoanRepository loanRepository;
 	
-	public boolean loanApplication(Loan loan, Integer monthlySalary) {
+	public boolean loanApplication(Loan loan, long monthlySalary) {
 		try {
 			if(monthlySalary*50<= loan.getTotalLoanAmount()) {
 				return false;

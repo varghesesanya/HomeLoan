@@ -46,7 +46,7 @@ public class LoanRepaymentController {
 			if(loanRepayment.getOutstanding() != 0)
 			{
 				double interest = loanService.calculateInterest(loanRepayment.getOutstanding(), loan.getInterestRate());
-	        	Date date = new Date();
+	        	Date date = loanRepayment.getDate();
 	        	date.setMonth(date.getMonth()+1);
 	        	
 	        	double principalAmount;
