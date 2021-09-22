@@ -21,8 +21,7 @@ public class LoanRepayment {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long loanRepaymentId;
-	
-	
+		
 	@Column
 	@NotNull(message = "EMI cannot be Null")
 	private double emi;
