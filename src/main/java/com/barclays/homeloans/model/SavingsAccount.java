@@ -24,7 +24,7 @@ public class SavingsAccount {
 	
 	@Column
 	@NotNull(message = "Balance cannot be Null")
-	private Long balance;
+	private double balance;
 	
 	
 	@OneToOne(cascade = CascadeType.ALL)
@@ -35,7 +35,7 @@ public class SavingsAccount {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SavingsAccount(@NotNull(message = "Balance cannot be Null") Long balance, User user) {
+	public SavingsAccount(@NotNull(message = "Balance cannot be Null") double balance, User user) {
 		super();
 		this.balance = balance;
 		this.user = user;
@@ -58,11 +58,11 @@ public class SavingsAccount {
 		this.accountNumber = accountNumber;
 	}
 
-	public Long getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Long balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 
