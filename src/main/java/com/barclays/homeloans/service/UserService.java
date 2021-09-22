@@ -45,6 +45,7 @@ public class UserService {
 
 
     public String registerUser(User user) {
+        if (user.getPassword().trim().length() == 0) return "Bad password! It cannot be empty";
         String hash = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
         user.setPassword(hash);
         userRepository.save(user);
