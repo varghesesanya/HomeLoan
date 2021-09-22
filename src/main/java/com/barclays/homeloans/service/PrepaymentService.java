@@ -31,23 +31,29 @@ public class PrepaymentService {
 		LoanRepayment last_outstanding = emi_list.get(emi_list.size() - 1);
 		
 		Long N;
-		double emi=0, R, P;
+		double emi=0, R, P, B;
 		LoanRepayment prepayment_emi = new LoanRepayment();
-		Date now = new Date();  
-		now.setMonth(now.getMonth()+1);
+		//Date now = new Date();  
+		//now.setMonth(now.getMonth()+1);
+		
+		Date date = last_outstanding.getDate();
+    	Date newDate = (Date) date.clone();
+		newDate.setMonth(newDate.getMonth() + 1);
+
 		
 		if(amount>=3*last_outstanding.getEmi() && !loan_list.get().getStatus().equals("Closed")){
 			
-			N = loan_list.get().getTenure()*12;
+			N = loan_list.get().getTenure();
 			P = last_outstanding.getOutstanding() - amount;
-
+			B = loan_list.get().getSavingsAccount().getBalance();
+			loan_list.get().getSavingsAccount().setBalance(B-amount);
 			if(P <=0) {
 				prepayment_emi.setEmi(0);
 				prepayment_emi.setInterestAmount(0);
 				prepayment_emi.setOutstanding(0);
 				prepayment_emi.setPrincipalAmount(0);
 				prepayment_emi.setStatus("Paid");
-				prepayment_emi.setDate(now);
+				prepayment_emi.setDate(newDate);
 				
 				loan_list.get().setStatus("Closed");
 			}
@@ -60,7 +66,7 @@ public class PrepaymentService {
 				prepayment_emi.setOutstanding(P);
 				prepayment_emi.setPrincipalAmount( last_outstanding.getEmi()- (R*P));
 				prepayment_emi.setStatus("Pending");
-				prepayment_emi.setDate(now);
+				prepayment_emi.setDate(newDate);
 			
 			}
 			last_outstanding.setStatus("Paid");
@@ -87,6 +93,7 @@ public class PrepaymentService {
 	/// FORECLOSURE
 	public String foreclosure(Long loan_id) {	
 		Optional <Loan> loan_list  = loanRepository.findById(loan_id);
+		double B;
 		
 		if (loan_list.isPresent()){
 			Loan loan= loan_list.get();
@@ -94,6 +101,9 @@ public class PrepaymentService {
 			if(loan.getStatus().equals("Closed")) {
 				return "LOAN ALREADY PAID";
 			}
+			
+			
+			
 			else if(emi_list.size()>=4 ){
 				LoanRepayment last_emi = emi_list.get(emi_list.size() - 1);
 				System.out.println(last_emi);
@@ -101,8 +111,9 @@ public class PrepaymentService {
 				System.out.println(loan.getStatus());
 				LoanRepayment foreclosure_emi = new LoanRepayment();
 				
-				Date now = new Date();  
-				now.setMonth(now.getMonth()+1);
+				Date date = last_emi.getDate();
+		    	Date newDate = (Date) date.clone();
+				newDate.setMonth(newDate.getMonth() + 1);
 				
 				
 				foreclosure_emi.setEmi(0);
@@ -110,11 +121,14 @@ public class PrepaymentService {
 				foreclosure_emi.setOutstanding(0);
 				foreclosure_emi.setPrincipalAmount(0);
 				foreclosure_emi.setStatus("Paid");
-				foreclosure_emi.setDate(now);
+				foreclosure_emi.setDate(newDate);
 				
 				//***5
 				LoanRepayment last_outstanding = emi_list.get(emi_list.size() - 1);
 				last_outstanding.setStatus("Paid");
+				
+				B = loan_list.get().getSavingsAccount().getBalance();
+				loan_list.get().getSavingsAccount().setBalance(B-last_outstanding.getOutstanding());
 				
 				loanRepaymentRepository.save(foreclosure_emi);	
 				System.out.println(foreclosure_emi);
