@@ -1,33 +1,26 @@
 package com.barclays.homeloans.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 import javax.validation.constraints.NotNull;
 
 @Entity
 public class SavingsAccount {
-	@Column
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long sequenceAccountId;
-	
 	@Column
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull(message = "Account Number cannot be Null")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator="store-sequence-generator")
+	@SequenceGenerator(name = "store-sequence-generator", sequenceName = "acc_no_sequence", initialValue = 1000000000  , allocationSize=1)
 	private Long accountNumber;
 	
 	@Column
 	@NotNull(message = "Balance cannot be Null")
-	private Long balance;
+	private double balance;
 	
 	
 	@OneToOne(cascade = CascadeType.ALL)
+	@NotNull(message = "User cannot be Null")
 	private User user;
 
 	public SavingsAccount() {
@@ -35,20 +28,20 @@ public class SavingsAccount {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SavingsAccount(@NotNull(message = "Balance cannot be Null") Long balance, User user) {
+	public SavingsAccount(@NotNull(message = "Balance cannot be Null") double balance, User user) {
 		super();
 		this.balance = balance;
 		this.user = user;
 	}
 	
 
-	public Long getSequenceAccountId() {
-		return sequenceAccountId;
-	}
-
-	public void setSequenceAccountId(Long sequenceAccountId) {
-		this.sequenceAccountId = sequenceAccountId;
-	}
+//	public Long getSequenceAccountId() {
+//		return sequenceAccountId;
+//	}
+//
+//	public void setSequenceAccountId(Long sequenceAccountId) {
+//		this.sequenceAccountId = sequenceAccountId;
+//	}
 
 	public Long getAccountNumber() {
 		return accountNumber;
@@ -58,11 +51,11 @@ public class SavingsAccount {
 		this.accountNumber = accountNumber;
 	}
 
-	public Long getBalance() {
+	public double getBalance() {
 		return balance;
 	}
 
-	public void setBalance(Long balance) {
+	public void setBalance(double balance) {
 		this.balance = balance;
 	}
 
@@ -76,7 +69,7 @@ public class SavingsAccount {
 
 	@Override
 	public String toString() {
-		return "SavingsAccount [sequenceAccountId=" + sequenceAccountId + ", accountNumber=" + accountNumber
+		return "SavingsAccount [sequenceAccountId=" /*+ sequenceAccountId*/ + ", accountNumber=" + accountNumber
 				+ ", balance=" + balance + ", user=" + user + "]";
 	}
 	
