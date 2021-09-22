@@ -38,6 +38,15 @@ public class UserController {
     public User login(@PathVariable String id) {
         return userService.getUsers(id);
     }
+    
+    
+    @PostMapping("sendMail")
+    public String mail(@RequestBody Map<String,String> json) {
+    	String id=json.get("customerId");
+        String isEmiOn= json.get("emiStatus");
+        
+        return userService.mail(id,isEmiOn);
+    }
 
 
 }
