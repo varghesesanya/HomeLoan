@@ -1,5 +1,6 @@
 package com.barclays.homeloans.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,29 +16,29 @@ public class LoanService {
 	@Autowired
 	private LoanRepository loanRepository;
 	
-	public String loanApplication(Loan loan, Integer monthlySalary) {
+	public boolean loanApplication(Loan loan, long monthlySalary) {
 		try {
 			if(monthlySalary*50<= loan.getTotalLoanAmount()) {
-				return "Sorry you're not eligible for a loan of such a large amount due to insufficient collateral, try again for a smaller amount.";
+				return false;
 			}
 			else if(5*12>loan.getTenure() || 20*12<loan.getTenure()){
-				return "Sorry you're not eligible for a loan because of tenure not being in the range of 5 years to 20 years, try again with a range between 5-20 years.";
+				return false;
 			}
 			else {
 				loanRepository.save(loan);
-				return "Congratulations. Loan Approved";
+				return true;
 			}
 			
 
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
-            return "Invalid Credentials. Please retry";
+            return false;
         }
 
 	}
 
-		public String calculateEMI(Long LoanId) {
+		public double calculateEMI(Long LoanId) {
 			// EMI = [P x R x (1+R)^N]/[(1+R)^N-1]
 			
 			Optional<Loan> l= loanRepository.findById(LoanId);
@@ -46,14 +47,32 @@ public class LoanService {
 				double emi, R;
 				
 				P = l.get().getTotalLoanAmount();
-				N = l.get().getTenure()*12;
+				N = l.get().getTenure();
 				R = l.get().getInterestRate()/1200; 
 				
 				emi = (P*R*Math.pow(1+R, N))/(Math.pow(1+R, N)-1);
 				
-				return "The amount to be paid as EMI for thr given loan:  "+ emi;
+				return emi;
 			}
-			return "Sorry, we didn't find any loan for the given ID.";
+			return 0;
 	}
+		
+		public Loan insertLoan(Loan loan){
+			
+			return loanRepository.save(loan);
+			
+		}
+		
+		public double calculateInterest(double outstanding,double rate){
+			
+			return (outstanding*rate)/1200;
+			
+		}
+		
+		
+		public List<Loan> getLoans()
+		{
+			return loanRepository.getLoans();
+		}
 	
 }

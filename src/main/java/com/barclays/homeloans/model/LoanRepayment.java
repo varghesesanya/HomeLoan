@@ -46,16 +46,13 @@ public class LoanRepayment {
 	@Column
 	@NotNull(message = "Date cannot be Null")
 	private Date date;
-	
-
-	
 
 	public LoanRepayment(@NotNull(message = "EMI cannot be Null") double emi,
 			@NotNull(message = "Interest Amount cannot be Null") double interestAmount,
 			@NotNull(message = "Principal Amount cannot be Null") double principalAmount,
 			@NotNull(message = "Status cannot be Null") String status,
 			@NotNull(message = "Outstanding cannot be Null") double outstanding,
-			@NotNull(message = "Date cannot be Null") Date date, Loan loan) {
+			@NotNull(message = "Date cannot be Null") Date date) {
 		super();
 		this.emi = emi;
 		this.interestAmount = interestAmount;
@@ -63,7 +60,6 @@ public class LoanRepayment {
 		this.status = status;
 		this.outstanding = outstanding;
 		this.date = date;
-		
 	}
 
 	public LoanRepayment() {
