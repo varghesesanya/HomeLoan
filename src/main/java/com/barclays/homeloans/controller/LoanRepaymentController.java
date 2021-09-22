@@ -47,7 +47,9 @@ public class LoanRepaymentController {
 			{
 				double interest = loanService.calculateInterest(loanRepayment.getOutstanding(), loan.getInterestRate());
 	        	Date date = loanRepayment.getDate();
-	        	date.setMonth(date.getMonth()+1);
+	        	Date newDate = (Date) date.clone();
+				newDate.setMonth(newDate.getMonth() + 1);
+
 	        	
 	        	double principalAmount;
 	        	if(emi > loanRepayment.getOutstanding())
@@ -61,7 +63,7 @@ public class LoanRepaymentController {
 	        	System.out.println(loan);
 	        	double outstanding = loanRepayment.getOutstanding() - principalAmount;
 	        	
-	        	LoanRepayment lr = new LoanRepayment(emi,interest,principalAmount,"Pending",outstanding,date);
+	        	LoanRepayment lr = new LoanRepayment(emi,interest,principalAmount,"Pending",outstanding,newDate);
         		loan.getLoanRepayment().add(lr);
 			}
 			else
