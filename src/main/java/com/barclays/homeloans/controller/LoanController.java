@@ -44,7 +44,7 @@ public class LoanController {
         	double principalAmount = emi-interest;
         	double outstanding = loan.getTotalLoanAmount() - principalAmount;
         	
-        	LoanRepayment lr = new LoanRepayment(emi,interest,principalAmount,"Pending",outstanding,date,loan);
+        	LoanRepayment lr = new LoanRepayment(emi,interest,principalAmount,"Pending",outstanding,date);
         	loanRepaymentService.createLoanRepayment(lr);
         	return "Loan Application Successfull";
         }

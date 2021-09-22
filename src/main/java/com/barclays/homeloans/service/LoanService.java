@@ -47,7 +47,7 @@ public class LoanService {
 				double emi, R;
 				
 				P = l.get().getTotalLoanAmount();
-				N = l.get().getTenure()*12;
+				N = l.get().getTenure();
 				R = l.get().getInterestRate()/1200; 
 				
 				emi = (P*R*Math.pow(1+R, N))/(Math.pow(1+R, N)-1);

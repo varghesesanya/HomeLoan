@@ -40,24 +40,42 @@ public class LoanRepaymentController {
 			double accountBalance = loan.getSavingsAccount().getBalance();
 			loan.getSavingsAccount().setBalance(accountBalance-emi);
 			loanRepayment.setStatus("Paid");
-			
-			System.out.println(loan);
         	
 			loanService.insertLoan(loan);
 			
-			double interest = loanService.calculateInterest(loanRepayment.getOutstanding(), loan.getInterestRate());
-        	Date date = new Date();
-        	date.setMonth(date.getMonth()+1);
-        	double principalAmount = emi-interest;
-        	double outstanding = loanRepayment.getOutstanding() - principalAmount;
-        	emi = Math.max(emi,outstanding);       	
-        	if(emi==0)
-        		loan.setStatus("Closed");
-        	else
-        	{
-        		LoanRepayment lr = new LoanRepayment(emi,interest,principalAmount,"Pending",outstanding,date,loan);
-            	loanRepaymentService.createLoanRepayment(lr);
-        	}
+			if(loanRepayment.getOutstanding() != 0)
+			{
+				double interest = loanService.calculateInterest(loanRepayment.getOutstanding(), loan.getInterestRate());
+	        	Date date = new Date();
+	        	date.setMonth(date.getMonth()+1);
+	        	
+	        	double principalAmount;
+	        	if(emi > loanRepayment.getOutstanding())
+	        	{
+	        		principalAmount = loanRepayment.getOutstanding();
+	        		emi = principalAmount;
+	        	}
+	        	else
+	        		principalAmount = emi-interest;
+	        	
+	        	System.out.println(loan);
+	        	double outstanding = loanRepayment.getOutstanding() - principalAmount;
+	        	
+	        	LoanRepayment lr = new LoanRepayment(emi,interest,principalAmount,"Pending",outstanding,date);
+        		loan.getLoanRepayment().add(lr);
+			}
+			else
+				loan.setStatus("Closed");
+        	       	
+//        	if(emi==0)
+//        		
+//        	else
+//        	{
+//        		
+//        		//System.out.println(loan);
+//        	}
+        	
+        	loanService.insertLoan(loan);
 			
 			
 			
