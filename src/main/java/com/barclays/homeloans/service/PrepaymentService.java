@@ -145,7 +145,7 @@ public class PrepaymentService {
 		else {
 			return "LOAN ID NOT PRESENT";
 		}
-		return "LOAN ID NOT PRESENT";
+		return "PAY ATLEAST 3 SUCCESFUL EMIS TO APPROVE FORECLOSURE";
 				
 		}
 }
