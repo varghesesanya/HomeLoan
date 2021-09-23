@@ -55,7 +55,7 @@ public class UserService {
         String hash = BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray());
         user.setPassword(hash);
         userRepository.save(user);
-        savingsAccountService.createNewAccount(user, 5000L);
+        savingsAccountService.createNewAccount(user, 500000000L);
         return " Hello " + user.getName();
     }
 
